@@ -11,6 +11,11 @@ namespace HelloWorldApp
     
         static void Main(string[] args)
         {
+        	if (args.Length == 1)
+        	{
+        		Edit(args[0]);
+        		return;
+        	}
             //Console.WriteLine("Hello, World!");
             
             Console.WriteLine("Welcome to Winderhub!");
