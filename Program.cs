@@ -12,13 +12,67 @@ namespace HelloWorldApp
         static void Main(string[] args)
         {
             //Console.WriteLine("Hello, World!");
-               
-            SelectFile();
-            Edit(selectedFile);
-
-
-			
+            
+            Console.WriteLine("Welcome to Winderhub!");
+             
+            Menu();
+            
         }
+        
+        static void Menu()
+        {       
+            Console.WriteLine("Choose an option to continue:");
+            
+            Console.WriteLine("1. Edit A File");
+            Console.WriteLine("2. Edit a Zig Project");
+            
+            Console.Write("Your Choice:");
+            string option = Console.ReadLine();
+            
+            if(option == "1")
+            {
+                SelectFile();
+                
+                if (!string.IsNullOrEmpty(selectedFile))
+                {
+                    Edit(selectedFile);
+                }
+
+            }
+            if(option == "2")
+            {
+                OpenZigProj();
+            }
+        }
+        
+        
+        
+        static void OpenZigProj()
+        {
+            Application.Init();
+
+            var dialog = new OpenDialog("Open Zig Project", "Select a folder")
+            {
+                AllowsMultipleSelection = false,
+                CanChooseDirectories = true,
+                CanChooseFiles = false
+            };
+
+            Application.Run(dialog);
+
+            if (dialog.FilePaths.Count > 0)
+            {
+                string selectedFolder = dialog.FilePaths[0];
+                Console.WriteLine($"Selected Zig project folder: {selectedFolder}");
+
+                // You can now scan for build.zig, src/, etc.
+                // Example: if (File.Exists(Path.Combine(selectedFolder, "build.zig"))) { ... }
+            }
+
+            Application.Shutdown();
+        }
+
+        
         
 
         static void SelectFile()
