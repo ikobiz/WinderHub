@@ -19,12 +19,19 @@ namespace HelloWorldApp
             
         }
         
+        static void Exit()
+        {
+            Application.Shutdown();
+            Environment.Exit(0);
+        }
+        
         static void Menu()
         {       
             Console.WriteLine("Choose an option to continue:");
             
             Console.WriteLine("1. Edit A File");
             Console.WriteLine("2. Edit a Zig Project");
+            Console.WriteLine("3. Exit");
             
             Console.Write("Your Choice:");
             string option = Console.ReadLine();
@@ -37,14 +44,54 @@ namespace HelloWorldApp
                 {
                     Edit(selectedFile);
                 }
+                
+                OpenFileMenu();
 
             }
+            
             if(option == "2")
             {
                 OpenZigProj();
             }
+            
+            if (option == "3")
+            {
+                Exit();
+            }
         }
         
+        
+        static void OpenFileMenu()
+        {
+            Console.WriteLine("Choose an option");
+            
+            Console.WriteLine("1. Edit Another File");
+            Console.WriteLine("2. Back to main Menu");
+            Console.WriteLine("3. Exit");
+            
+            Console.Write("Your Choice:");
+            string option = Console.ReadLine();
+            
+            if (option == "1")
+            {
+                SelectFile();
+                
+                if (!string.IsNullOrEmpty(selectedFile))
+                {
+                    Edit(selectedFile);
+                }
+            }
+            
+            if (option == "2")
+            {
+                Menu();
+            }
+            
+            if (option == "3")
+            {
+                Exit();
+            }
+        }
         
         
         static void OpenZigProj()
@@ -97,55 +144,55 @@ namespace HelloWorldApp
         }
         
         static void Edit(string file)
-{
-    Application.Init();
-
-    var top = Application.Top;
-    var win = new Window($"Editing: {Path.GetFileName(file)}")
-    {
-        X = 0,
-        Y = 1,
-        Width = Dim.Fill(),
-        Height = Dim.Fill()
-    };
-    top.Add(win);
-
-    var textView = new TextView()
-    {
-        X = 0,
-        Y = 0,
-        Width = Dim.Fill(),
-        Height = Dim.Fill()
-    };
-    win.Add(textView);
-
-    // Load file contents
-    if (File.Exists(file))
-    {
-        textView.Text = File.ReadAllText(file);
-    }
-    else
-    {
-        textView.Text = "";
-    }
-
-    // Save on Ctrl+S
-    top.Add(new MenuBar(new MenuBarItem[]
-    {
-        new MenuBarItem("_File", new MenuItem[]
         {
-            new MenuItem("_Save", "Ctrl+S", () =>
-            {
-                File.WriteAllText(file, textView.Text.ToString());
-                MessageBox.Query(40, 7, "Saved", "File saved successfully.", "OK");
-            }),
-            new MenuItem("_Quit", "Ctrl+Q", () => Application.RequestStop())
-        })
-    }));
+            Application.Init();
 
-    Application.Run();
-    Application.Shutdown();
-}
+            var top = Application.Top;
+            var win = new Window($"Editing: {Path.GetFileName(file)}")
+            {
+                X = 0,
+                Y = 1,
+                Width = Dim.Fill(),
+                Height = Dim.Fill()
+            };
+            top.Add(win);
+
+            var textView = new TextView()
+            {
+                X = 0,
+                Y = 0,
+                Width = Dim.Fill(),
+                Height = Dim.Fill()
+            };
+        win.Add(textView);
+
+        // Load file contents
+        if (File.Exists(file))
+        {
+            textView.Text = File.ReadAllText(file);
+        }
+        else
+        {
+            textView.Text = "";
+        }
+
+        // Save on Ctrl+S
+        top.Add(new MenuBar(new MenuBarItem[]
+        {
+            new MenuBarItem("_File", new MenuItem[]
+            {
+                new MenuItem("_Save", "Ctrl+S", () =>
+                {
+                    File.WriteAllText(file, textView.Text.ToString());
+                    MessageBox.Query(40, 7, "Saved", "File saved successfully.", "OK");
+                }),
+                    new MenuItem("_Quit", "Ctrl+Q", () => Application.RequestStop())
+                })
+            }));
+
+            Application.Run();
+            Application.Shutdown();
+        }
 
         
     }
