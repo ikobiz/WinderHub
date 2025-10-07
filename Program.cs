@@ -56,7 +56,7 @@ namespace HelloWorldApp
             
             if(option == "2")
             {
-                OpenZigProj();
+                Console.WriteLine("This App doesent support this feature yet.");
             }
             
             if (option == "3")
